@@ -11,16 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Add the new column, copy the data, then drop the old column
         Schema::table('products', function (Blueprint $table) {
-            $table->string('serial_numbers')->nullable(); // Create the new column
-        });
-
-        // Optionally copy the data from 'serial_number' to 'serial_numbers'
-        DB::statement('UPDATE products SET serial_numbers = serial_number');
-
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('serial_number'); // Drop the old column
+            $table->renameColumn('serial_number', 'serial_numbers');
         });
     }
 
@@ -29,17 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Add the old column back
         Schema::table('products', function (Blueprint $table) {
-            $table->string('serial_number')->nullable();
-        });
-
-        // Optionally copy the data from 'serial_numbers' back to 'serial_number'
-        DB::statement('UPDATE products SET serial_number = serial_numbers');
-
-        // Drop the new column
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('serial_numbers');
+            $table->renameColumn('serial_numbers', 'serial_number');
         });
     }
 };
