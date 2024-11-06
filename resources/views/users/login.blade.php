@@ -18,19 +18,22 @@
             <div class="row">
                 <div class="col-xl-6 col-lg-8 offset-xl-3 offset-lg-2">
                     <div class="login-form">
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Error!</strong> {{ session()->get('error') }}
-                            </div>
-                        @endif
-                        @if (session()->has('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Success!</strong> {{ session()->get('success') }}
-                            </div>
-                        @endif
                         {{ html()->form('POST', route('authenticate',[
                             'locale'=>config('app.locale')
                         ]))->open() }}
+                        @if(session()->has('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        @if(session()->has('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
                         <div class="form-group row">
                             <label for="email" class="col-sm-3 col-form-label">{{ __('login.email') }}</label>
                             <div class="col-sm-7">

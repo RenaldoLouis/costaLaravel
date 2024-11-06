@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -191,13 +192,16 @@ class UserController extends Controller
 
         // cek apakah user sudah verifikasi email atau belum
         $user = \App\Models\User::where('email', strtolower($request->email))->first();
+
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Email not found');
+            session()->flash('error', 'Email not found');
+            return redirect()->back();
         }
 
         // cek apakah email sudah diverifikasi atau belum
         if ($user->email_verified_at == null) {
-            return redirect()->route('login')->with('error', 'Please verify your email first');
+            session()->flash('error', 'Please verify your email first');
+            return redirect()->back();
         }
 
         // cek apakah email dan password benar
